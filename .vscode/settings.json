@@ -1,0 +1,32 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#007a58",
+    "activityBar.background": "#007a58",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#db80ff",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#007a58",
+    "statusBar.background": "#004733",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#007a58",
+    "statusBarItem.remoteBackground": "#004733",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#004733",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#00473399",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "editorGutter.background": "#004733"
+  },
+  "peacock.color": "#004733",
+  "editor.glyphMargin": false,
+  "breadcrumbs.enabled": false,
+  "workbench.tree.indent": 5,
+  "workbench.tree.renderIndentGuides": "always",
+  // "workbench.list.horizontalScrolling": true,
+  "explorer.enableUndo": false,
+  "[markdown]": {
+    "editor.inlineSuggest.enabled": false
+  }
+}
