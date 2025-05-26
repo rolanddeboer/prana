@@ -21,12 +21,85 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .hidden {
   display: none !important;
 }
 
+/* Settings Form Styles */
+.settings-form {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.setting-group {
+  margin-bottom: 25px;
+}
+
+.setting-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 16px;
+}
+
+.setting-group input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.setting-group input:focus {
+  outline: none;
+  border-color: #2196F3;
+}
+
+.setting-group small {
+  display: block;
+  margin-top: 4px;
+  color: #666;
+  font-size: 13px;
+}
+
+.calculated-values {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  border-left: 4px solid #2196F3;
+}
+
+.calculated-values h3 {
+  margin-bottom: 15px;
+  color: #1976D2;
+  font-size: 16px;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.calc-row span:first-child {
+  color: #555;
+}
+
+.calc-row span:last-child {
+  font-weight: 600;
+  color: #1976D2;
+}
+
+/* Action Screen Styles */
 .top-left {
   position: absolute;
   top: 20px;
@@ -68,6 +141,7 @@ body {
   background-color: #2196F3;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .bottom-left button:hover {
@@ -93,6 +167,7 @@ body {
   cursor: pointer;
   width: 50px;
   height: 50px;
+  transition: background-color 0.3s;
 }
 
 .bottom-right button:hover {
@@ -103,4 +178,49 @@ h1 {
   text-align: center;
   margin-bottom: 30px;
   color: #333;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .screen {
+      padding: 15px;
+  }
+  
+  .settings-form {
+      max-width: 100%;
+  }
+  
+  .center {
+      font-size: 36px;
+  }
+  
+  .bottom-left button {
+      padding: 10px 20px;
+      font-size: 14px;
+  }
+  
+  .bottom-right button {
+      width: 45px;
+      height: 45px;
+      font-size: 18px;
+  }
+}
+/* Add this to the existing CSS */
+
+.instruction {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .instruction {
+      font-size: 16px;
+      top: 65%;
+  }
 }

@@ -4,22 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2196F3">
-    <title>Prana</title>
+    <title>Prana - Breathing Exercise</title>
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div id="app">
         <div id="settings-screen" class="screen">
-            <h1>Settings</h1>
-            <!-- Settings will be added here -->
+            <h1>Prana Settings</h1>
+            
+            <div class="settings-form">
+                <div class="setting-group">
+                    <label for="cycle-duration">Cycle Duration (seconds)</label>
+                    <input type="number" id="cycle-duration" min="5" max="120" step="1">
+                    <small>Total time for one complete breathing cycle</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="out-in-ratio">Out/In Breath Ratio</label>
+                    <input type="number" id="out-in-ratio" min="0.5" max="3.0" step="0.1">
+                    <small>Ratio of exhale duration to inhale duration</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="hold-in">Hold After Inhale (seconds)</label>
+                    <input type="number" id="hold-in" min="0" max="30" step="1">
+                    <small>Time to hold breath after inhaling</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="hold-out">Hold After Exhale (seconds)</label>
+                    <input type="number" id="hold-out" min="0" max="30" step="1">
+                    <small>Time to hold breath after exhaling</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="total-exercise">Total Exercise (minutes)</label>
+                    <input type="number" id="total-exercise" min="1" max="60" step="1">
+                    <small>Total duration of the breathing exercise</small>
+                </div>
+
+                <div class="calculated-values">
+                    <h3>Calculated Timings</h3>
+                    <div class="calc-row">
+                        <span>Inhale Duration:</span>
+                        <span id="calc-inhale">0.0s</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Exhale Duration:</span>
+                        <span id="calc-exhale">0.0s</span>
+                    </div>
+                </div>
+            </div>
+            
             <button id="settings-ok" class="bottom-left">OK</button>
         </div>
         
         <div id="action-screen" class="screen hidden">
             <div id="total-counter" class="top-right">10:00</div>
-            <div id="cycle-duration" class="top-left">20s</div>
+            <div id="cycle-duration-display" class="top-left">20s</div>
             
             <div id="main-counter" class="center">Ready</div>
+            <div id="instruction" class="instruction">Ready to begin</div>
             
             <div class="bottom-left">
                 <button id="settings-btn">Settings</button>

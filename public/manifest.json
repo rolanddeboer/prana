@@ -1,6 +1,6 @@
 {
   "name": "Prana",
-  "short_name": "Breathe",
+  "short_name": "Prana",
   "description": "A simple pranayama app",
   "start_url": "/",
   "display": "standalone",

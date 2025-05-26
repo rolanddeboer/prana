@@ -1,9 +1,18 @@
 import './styles/main.css';
+import { SettingsManager } from './components/SettingsManager';
+import { ActionScreenManager } from './components/ActionScreenManager';
+import { Settings } from './services/Settings';
 
 class BreathingApp {
     private currentScreen: 'settings' | 'action' = 'settings';
+    private settingsManager: SettingsManager;
+    private actionScreenManager: ActionScreenManager;
+    private settings: Settings;
 
     constructor() {
+        this.settings = Settings.getInstance();
+        this.settingsManager = new SettingsManager();
+        this.actionScreenManager = new ActionScreenManager();
         this.init();
     }
 
@@ -33,9 +42,11 @@ class BreathingApp {
         if (screen === 'settings') {
             settingsScreen?.classList.remove('hidden');
             actionScreen?.classList.add('hidden');
+            this.settingsManager.refreshDisplay();
         } else {
             settingsScreen?.classList.add('hidden');
             actionScreen?.classList.remove('hidden');
+            this.actionScreenManager.updateDisplay();
         }
         
         this.currentScreen = screen;
@@ -50,13 +61,11 @@ class BreathingApp {
     }
 
     private handleGoReset(): void {
-        // TODO: Implement go/reset functionality
-        console.log('Go/Reset clicked');
+        this.actionScreenManager.toggleExercise();
     }
 
     private adjustCycleDuration(seconds: number): void {
-        // TODO: Implement cycle duration adjustment
-        console.log(`Adjust cycle duration by ${seconds} seconds`);
+        this.actionScreenManager.adjustCycleDuration(seconds);
     }
 }
 
@@ -65,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new BreathingApp();
 });
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
+// Only register service worker in production
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
             .then((registration) => {
