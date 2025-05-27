@@ -4,7 +4,7 @@ import { ActionScreenManager } from './components/ActionScreenManager';
 import { Settings } from './services/Settings';
 
 class BreathingApp {
-    private currentScreen: 'settings' | 'action' = 'settings';
+    private currentScreen: 'settings' | 'action' = 'action'; // Start on action screen
     private settingsManager: SettingsManager;
     private actionScreenManager: ActionScreenManager;
     private settings: Settings;

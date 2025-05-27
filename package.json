@@ -4,10 +4,11 @@
     "description": "A simple breathing exercise PWA",
     "main": "index.js",
     "scripts": {
-        "start": "npx webpack serve --mode development",
-        "build": "npx webpack --mode production",
-        "dev": "npx webpack serve --mode development --open",
-        "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "npx webpack serve --mode development",
+      "start-no-reload": "npx webpack serve --mode development --no-hot --no-live-reload",
+      "build": "npx webpack --mode production",
+      "dev": "npx webpack serve --mode development --open",
+      "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
         "pwa",

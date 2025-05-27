@@ -40,8 +40,10 @@ module.exports = (env, argv) => {
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     devServer: {
       static: './dist',
-      hot: true,
+      hot: false, // Disable hot reloading
+      liveReload: true, // Use live reload instead
       port: 3000,
+      watchFiles: ['src/**/*'], // Watch for file changes
     },
     plugins,
     output: {

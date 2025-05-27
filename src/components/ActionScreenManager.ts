@@ -26,7 +26,7 @@ export class ActionScreenManager {
 
     public toggleExercise(): void {
         if (this.isRunning) {
-            this.stopExercise();
+            this.resetExercise();
         } else {
             const state = this.breathingCycle.getState();
             if (state.totalRemainingMs < this.settings.getSettings().totalExerciseMinutes * 60 * 1000) {
@@ -42,6 +42,7 @@ export class ActionScreenManager {
         this.isRunning = false;
         this.updateGoResetButton();
         this.updateDisplay();
+        this.resetProgressBar();
     }
 
     private startExercise(): void {
@@ -50,57 +51,46 @@ export class ActionScreenManager {
         this.updateGoResetButton();
     }
 
-    private stopExercise(): void {
-        this.breathingCycle.stop();
-        this.isRunning = false;
-        this.updateGoResetButton();
+    private resetProgressBar(): void {
+        const progressFill = document.getElementById('progress-fill');
+        const holdCounter = document.getElementById('hold-counter');
+        
+        if (progressFill) {
+            progressFill.style.height = '0%';
+            progressFill.style.transition = 'none';
+        }
+        
+        if (holdCounter) {
+            holdCounter.style.display = 'none';
+        }
     }
 
     private updateGoResetButton(): void {
         const button = document.getElementById('go-reset-btn');
-        if (button) {
+        const playIcon = document.getElementById('play-icon');
+        const resetIcon = document.getElementById('reset-icon');
+        
+        if (button && playIcon && resetIcon) {
             if (this.isRunning) {
-                button.textContent = 'Pause';
-                button.style.backgroundColor = '#ff9800';
+                playIcon.style.display = 'none';
+                resetIcon.style.display = 'block';
+                button.style.backgroundColor = '#f44336';
             } else {
-                const state = this.breathingCycle.getState();
-                const totalExerciseMs = this.settings.getSettings().totalExerciseMinutes * 60 * 1000;
-                if (state.totalRemainingMs < totalExerciseMs && state.totalRemainingMs > 0) {
-                    button.textContent = 'Reset';
-                    button.style.backgroundColor = '#f44336';
-                } else {
-                    button.textContent = 'Go';
-                    button.style.backgroundColor = '#4CAF50';
-                }
+                playIcon.style.display = 'block';
+                resetIcon.style.display = 'none';
+                button.style.backgroundColor = '#4CAF50';
             }
         }
     }
 
     private updateDisplayFromState(state: CycleState): void {
-        this.updateMainCounter(state);
         this.updateTotalCounter(state);
-        this.updateInstruction(state);
+        this.updateProgressBar(state);
+        this.updateHoldCounter(state);
+        this.updateNostrilIndicator(state);
         
         if (state.totalRemainingMs <= 0 && !state.isActive) {
             this.onExerciseComplete();
-        }
-    }
-
-    private updateMainCounter(state: CycleState): void {
-        const mainCounter = document.getElementById('main-counter');
-        if (!mainCounter) return;
-
-        const totalExerciseMs = this.settings.getSettings().totalExerciseMinutes * 60 * 1000;
-        
-        if (!state.isActive && state.totalRemainingMs >= totalExerciseMs) {
-            mainCounter.textContent = 'Ready';
-            mainCounter.style.color = '#333';
-        } else if (state.totalRemainingMs <= 0) {
-            mainCounter.textContent = 'Complete!';
-            mainCounter.style.color = '#4CAF50';
-        } else {
-            mainCounter.textContent = this.breathingCycle.getPhaseDisplayText();
-            mainCounter.style.color = this.getPhaseColor(state.phase);
         }
     }
 
@@ -114,10 +104,47 @@ export class ActionScreenManager {
         }
     }
 
-    private updateInstruction(state: CycleState): void {
-        const instructionEl = document.getElementById('instruction');
-        if (instructionEl) {
-            instructionEl.textContent = this.breathingCycle.getCurrentInstruction();
+    private updateProgressBar(state: CycleState): void {
+        const progressFill = document.getElementById('progress-fill');
+        if (!progressFill) return;
+
+        if (state.phase === 'inhale' || state.phase === 'exhale') {
+            const percentage = this.breathingCycle.getProgressPercentage();
+            const remainingDuration = state.remainingTimeMs / 1000;
+            
+            if (state.phase === 'inhale') {
+                progressFill.style.height = `${percentage}%`;
+            } else {
+                // For exhale, still show decreasing height (100% - percentage)
+                progressFill.style.height = `${100 - percentage}%`;
+            }
+            
+            // Keep the same color for both inhale and exhale
+            progressFill.style.background = 'linear-gradient(to top, #2196F3, #64B5F6)';
+            progressFill.style.transition = `height ${remainingDuration}s linear`;
+        } else {
+            // Hold phases - keep current height, no animation
+            progressFill.style.transition = 'none';
+        }
+    }
+
+    private updateHoldCounter(state: CycleState): void {
+        const holdCounter = document.getElementById('hold-counter');
+        if (!holdCounter) return;
+
+        if (state.phase === 'hold-in' || state.phase === 'hold-out') {
+            const remainingSeconds = Math.max(0, Math.ceil(state.remainingTimeMs / 1000));
+            holdCounter.textContent = remainingSeconds.toString();
+            holdCounter.style.display = 'flex';
+        } else {
+            holdCounter.style.display = 'none';
+        }
+    }
+
+    private updateNostrilIndicator(state: CycleState): void {
+        const nostrilIndicator = document.getElementById('nostril-indicator');
+        if (nostrilIndicator) {
+            nostrilIndicator.className = `nostril-indicator ${state.nostril}`;
         }
     }
 
@@ -126,21 +153,6 @@ export class ActionScreenManager {
         if (cycleDurationEl) {
             const currentDuration = this.settings.getSettings().cycleDurationSeconds;
             cycleDurationEl.textContent = `${currentDuration}s`;
-        }
-    }
-
-    private getPhaseColor(phase: string): string {
-        switch (phase) {
-            case 'inhale':
-                return '#2196F3';
-            case 'hold-in':
-                return '#9C27B0';
-            case 'exhale':
-                return '#FF5722';
-            case 'hold-out':
-                return '#795548';
-            default:
-                return '#333';
         }
     }
 
@@ -168,13 +180,8 @@ export class ActionScreenManager {
         const currentSettings = this.settings.getSettings();
         const newDuration = currentSettings.cycleDurationSeconds + seconds;
         
-        // Update settings
         this.settings.setCycleDuration(newDuration);
-        
-        // Update display immediately
         this.updateCycleDuration();
-        
-        // Adjust the breathing cycle timings on the fly (maintaining current progress)
         this.breathingCycle.adjustTimingsOnTheFly();
     }
 }

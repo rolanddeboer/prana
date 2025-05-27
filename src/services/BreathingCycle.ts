@@ -74,25 +74,17 @@ export class BreathingCycle {
     }
 
     public adjustTimingsOnTheFly(): void {
-        // Recalculate the current phase timing based on current progress
-        // but maintain the same percentage through the phase
-        
         if (!this.state.isActive) {
-            // If not active, just update the initial state
             this.state = this.getInitialState();
             this.notifyStateChange();
             return;
         }
 
-        // Calculate current progress percentage
         const elapsed = this.state.totalPhaseTimeMs - this.state.remainingTimeMs;
         const progressPercentage = this.state.totalPhaseTimeMs > 0 ? 
             elapsed / this.state.totalPhaseTimeMs : 0;
 
-        // Get new phase duration
         const newPhaseDuration = this.getNewPhaseDuration(this.state.phase);
-        
-        // Apply the same progress percentage to the new duration
         const newElapsed = newPhaseDuration * progressPercentage;
         const newRemaining = newPhaseDuration - newElapsed;
 
@@ -115,7 +107,7 @@ export class BreathingCycle {
             case 'hold-out':
                 return settings.holdOutSeconds * 1000;
             default:
-                return 1000; // fallback
+                return 1000;
         }
     }
 
@@ -143,9 +135,12 @@ export class BreathingCycle {
         
         switch (this.state.phase) {
             case 'inhale':
+                // Switch nostril after inhale
+                this.state.nostril = this.state.nostril === 'left' ? 'right' : 'left';
                 this.state.phase = 'hold-in';
                 this.state.remainingTimeMs = settings.holdInSeconds * 1000;
                 this.state.totalPhaseTimeMs = settings.holdInSeconds * 1000;
+                this.state.cycleCount++;
                 break;
             
             case 'hold-in':
@@ -161,11 +156,10 @@ export class BreathingCycle {
                 break;
             
             case 'hold-out':
-                this.state.nostril = this.state.nostril === 'left' ? 'right' : 'left';
+                // Just advance to next inhale (nostril already switched after previous inhale)
                 this.state.phase = 'inhale';
                 this.state.remainingTimeMs = this.settings.getInBreathDuration() * 1000;
                 this.state.totalPhaseTimeMs = this.settings.getInBreathDuration() * 1000;
-                this.state.cycleCount++;
                 break;
         }
 
@@ -184,31 +178,19 @@ export class BreathingCycle {
         }
     }
 
-    public getDisplayPercentage(): number {
+    public getProgressPercentage(): number {
         if (this.state.totalPhaseTimeMs === 0) return 0;
         
         const elapsed = this.state.totalPhaseTimeMs - this.state.remainingTimeMs;
-        const percentage = (elapsed / this.state.totalPhaseTimeMs) * 100;
-        
-        switch (this.state.phase) {
-            case 'inhale':
-                return Math.min(100, Math.max(0, percentage));
-            case 'exhale':
-                return Math.max(0, Math.min(100, 100 - percentage));
-            case 'hold-in':
-            case 'hold-out':
-                return Math.max(0, Math.ceil(this.state.remainingTimeMs / 1000));
-            default:
-                return 0;
-        }
+        return Math.min(100, Math.max(0, (elapsed / this.state.totalPhaseTimeMs) * 100));
     }
 
     public getPhaseDisplayText(): string {
         switch (this.state.phase) {
             case 'inhale':
-                return `${Math.round(this.getDisplayPercentage())}%`;
+                return 'Inhale';
             case 'exhale':
-                return `${Math.round(this.getDisplayPercentage())}%`;
+                return 'Exhale';
             case 'hold-in':
             case 'hold-out':
                 return `${Math.max(0, Math.ceil(this.state.remainingTimeMs / 1000))}`;
@@ -218,17 +200,15 @@ export class BreathingCycle {
     }
 
     public getCurrentInstruction(): string {
-        const nostril = this.state.nostril === 'left' ? 'Left' : 'Right';
-        
         switch (this.state.phase) {
             case 'inhale':
-                return `Inhale (${nostril} nostril closed)`;
+                return 'Breathe in slowly';
             case 'hold-in':
-                return `Hold breath in`;
+                return 'Hold your breath';
             case 'exhale':
-                return `Exhale (${nostril} nostril closed)`;
+                return 'Breathe out slowly';
             case 'hold-out':
-                return `Hold breath out`;
+                return 'Hold empty';
             default:
                 return 'Ready to begin';
         }
