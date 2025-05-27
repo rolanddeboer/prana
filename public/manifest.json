@@ -3,7 +3,7 @@
   "short_name": "Prana",
   "description": "A simple pranayama app",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#f5f5f5",
   "theme_color": "#2196F3",
   "icons": [

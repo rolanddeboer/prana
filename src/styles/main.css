@@ -6,10 +6,11 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f5f5f5;
+  background-color: #000000;
+  color: #888888;
   height: 100vh;
   overflow: hidden;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 #app {
@@ -19,7 +20,7 @@ body {
 
 .screen {
   height: 100vh;
-  padding: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -32,90 +33,94 @@ body {
 /* Settings Form Styles */
 .settings-form {
   flex: 1;
-  max-width: 600px;
+  max-width: 400px;
   margin: 0 auto;
-  padding-bottom: 120px;
+  padding-bottom: 80px;
 }
 
 .setting-group {
-  margin-bottom: 38px;
+  margin-bottom: 25px;
 }
 
 .setting-group label {
   display: block;
   font-weight: 600;
-  margin-bottom: 12px;
-  color: #333;
-  font-size: 24px;
+  margin-bottom: 8px;
+  color: #888888;
+  font-size: 16px;
 }
 
 .setting-group input {
   width: 100%;
-  padding: 18px;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  font-size: 24px;
+  padding: 12px;
+  border: 2px solid #444444;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #222222;
+  color: #cccccc;
   transition: border-color 0.3s;
 }
 
 .setting-group input:focus {
   outline: none;
-  border-color: #2196F3;
+  border-color: #1565C0; /* Darker blue */
 }
 
 .setting-group small {
   display: block;
-  margin-top: 6px;
-  color: #666;
-  font-size: 20px;
+  margin-top: 4px;
+  color: #666666;
+  font-size: 13px;
 }
 
 .calculated-values {
-  margin-top: 45px;
-  padding: 30px;
-  background-color: #e3f2fd;
-  border-radius: 12px;
-  border-left: 6px solid #2196F3;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border-left: 4px solid #1565C0; /* Darker blue */
 }
 
 .calculated-values h3 {
-  margin-bottom: 23px;
-  color: #1976D2;
-  font-size: 24px;
+  margin-bottom: 15px;
+  color: #1565C0; /* Darker blue */
+  font-size: 16px;
 }
 
 .calc-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 21px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .calc-row span:first-child {
-  color: #555;
+  color: #888888;
 }
 
 .calc-row span:last-child {
   font-weight: 600;
-  color: #1976D2;
+  color: #1565C0; /* Darker blue */
 }
 
 /* Settings OK Button */
 .settings-ok-button {
   position: absolute;
-  bottom: 30px;
-  left: 30px;
+  bottom: 20px;
+  left: 20px;
   width: 75px;
   height: 75px;
   border-radius: 50%;
   border: none;
-  background-color: #4CAF50;
+  background-color: #2E7D32; /* Darker green */
   color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .settings-ok-button svg {
@@ -124,16 +129,25 @@ body {
 }
 
 .settings-ok-button:hover {
-  background-color: #45a049;
+  background-color: #1B5E20; /* Even darker green on hover */
+}
+
+.settings-ok-button:focus {
+  outline: none;
 }
 
 /* Action Screen Styles */
+#action-screen {
+  font-size: 18px;
+}
+
 .top-left {
   position: absolute;
   top: 30px;
   left: 30px;
   font-size: 27px;
   font-weight: bold;
+  color: #888888;
 }
 
 .top-right {
@@ -141,9 +155,10 @@ body {
   top: 30px;
   right: 30px;
   font-size: 24px;
+  color: #888888;
 }
 
-/* Breathing Container - Fixed positioning */
+/* Breathing Container */
 .breathing-container {
   position: absolute;
   top: 50%;
@@ -160,7 +175,7 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #2196F3;
+  background-color: #1565C0; /* Darker blue */
   transition: left 0.3s ease;
   top: 50%;
   transform: translateY(-50%);
@@ -177,11 +192,11 @@ body {
 .breathing-progress {
   width: 120px;
   height: 360px;
-  border: 4px solid #333;
+  border: 4px solid #444444;
   border-radius: 12px;
   position: relative;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: #222222;
   margin: 0 auto;
 }
 
@@ -191,9 +206,10 @@ body {
   left: 0;
   width: 100%;
   height: 0%;
-  background: linear-gradient(to top, #2196F3, #64B5F6);
+  background: linear-gradient(to top, #1565C0, #1976D2); /* Darker blue gradient */
   transition-property: height;
   transition-timing-function: linear;
+  transition-duration: 0.1s; /* Short transition for manual updates */
 }
 
 .hold-counter {
@@ -242,7 +258,7 @@ body {
   height: 75px;
   border-radius: 50%;
   border: none;
-  background-color: #2196F3;
+  background-color: #1565C0; /* Darker blue */
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -250,6 +266,8 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .round-button .icon-container {
@@ -266,15 +284,19 @@ body {
 }
 
 .round-button.primary {
-  background-color: #4CAF50;
+  background-color: #2E7D32; /* Darker green */
 }
 
 .round-button:hover {
-  background-color: #1976D2;
+  background-color: #0D47A1; /* Even darker blue on hover */
 }
 
 .round-button.primary:hover {
-  background-color: #45a049;
+  background-color: #1B5E20; /* Even darker green on hover */
+}
+
+.round-button:focus {
+  outline: none;
 }
 
 .adjustment-button {
@@ -282,13 +304,15 @@ body {
   height: 75px;
   border-radius: 50%;
   border: none;
-  background-color: #4CAF50;
+  background-color: #2E7D32; /* Darker green */
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .adjustment-button svg {
@@ -297,19 +321,27 @@ body {
 }
 
 .adjustment-button:hover {
-  background-color: #45a049;
+  background-color: #1B5E20; /* Even darker green on hover */
+}
+
+.adjustment-button:focus {
+  outline: none;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 45px;
-  color: #333;
-  font-size: 36px;
+  margin-bottom: 30px;
+  color: #888888;
+  font-size: 24px;
 }
 
 /* Mobile responsiveness */
 @media (max-width: 480px) {
   .screen {
+      padding: 15px;
+  }
+  
+  #action-screen {
       padding: 23px;
   }
   
